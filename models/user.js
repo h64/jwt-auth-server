@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const emailRegexp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-const easyRegexp = /.*@?*\..*/;
-
 const userSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -14,13 +11,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true,
-        minlength: 5,
-        validate: {
-            validator: (input) => {
-                return emailRegexp.test(input)
-            },
-            message: props => `${props.value} is not a valid email!`
-        }
+        minlength: 5
     },
     password: {
         type: String,

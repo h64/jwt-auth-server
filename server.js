@@ -2,9 +2,11 @@
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const rowdyLogger = require('rowdy-logger');
 
 // Instantiate server
 const app = express();
+const rowdyResults = rowdyLogger.begin(app);
 
 // Set up middleware
 app.use(express.urlencoded({ extended: false }));
@@ -23,4 +25,5 @@ app.use('*', (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log('Server now listening on port', PORT);
+    rowdyResults.print()
 })

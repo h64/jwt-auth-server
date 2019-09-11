@@ -12,6 +12,9 @@ app.use(express.json({ limit: '10mb' }));
 app.use(morgan('dev'));
 app.use(cors());
 
+// Controllers
+app.use('/auth', require('./controllers/auth'));
+
 // Routes
 app.use('*', (req, res) => {
     res.status(404).send({ message: 'Not Found'});

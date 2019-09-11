@@ -1,6 +1,7 @@
 // Required Modules
 const express = require('express');
 const cors = require('cors');
+const morgan = require('morgan');
 
 // Instantiate server
 const app = express();
@@ -8,6 +9,7 @@ const app = express();
 // Set up middleware
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ limit: '10mb' }));
+app.use(morgan('dev'));
 app.use(cors());
 
 // Routes

@@ -1,7 +1,16 @@
 require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const router = require('express').Router();
+const expressJwt = require('express-jwt');
+
 const db = require('../models');
+
+function protectRoute(req, res, next) {
+    expressJwt({
+        secret: process.env.JWT_SECRET
+    })
+    next()
+}
 
 router.post('/login', (req, res) => {
     // Fint eh user by their email in the db
@@ -61,7 +70,11 @@ router.post('/signup', (req, res) => {
 
 // Note - user must be logged in to access this route
 router.get('/current/user', (req, res) => {
-    res.send('STUB - current user data')
+    if(!req.user || !req.user._id) {
+        return res.status(417).send({ message: 'Check configuration' });
+    }
+
+    res.send({ user: req.user });
 })
 
 module.exports = router;

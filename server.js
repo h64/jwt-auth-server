@@ -1,5 +1,7 @@
 // Required Modules
+require('dotenv').config();
 const express = require('express');
+const expressJwt = require('express-jwt');
 const cors = require('cors');
 const morgan = require('morgan');
 const rowdyLogger = require('rowdy-logger');
@@ -15,7 +17,18 @@ app.use(morgan('dev'));
 app.use(cors());
 
 // Controllers
-app.use('/auth', require('./controllers/auth'));
+app.use('/auth', 
+    expressJwt({
+        secret: process.env.JWT_SECRET
+    })
+    .unless({
+        path: [
+            { url: '/auth/login', methods: ['POST'] },
+            { url: '/auth/signup', methods: ['POST'] }
+    ]}), 
+    require('./controllers/auth'));
+
+// app.use('/auth', require('./controllers/auth'));
 
 // Routes
 app.use('*', (req, res) => {
